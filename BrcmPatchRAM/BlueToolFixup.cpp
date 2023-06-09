@@ -125,10 +125,18 @@ static const uint8_t kBadChipsetCheckPatched13_3[] =
 
 static const uint8_t kSkipInternalControllerNVRAMCheck13_3[] =
 {
-    0x41, 0x80, 0xF7, 0x01, // xor     r15b, 1
+    0x41, 0x80, 0x00, 0x01, // xor     r15b, 1
     0x75, 0x27,             // jnz     short
     0x84, 0xDB,             // test    bl, bl
     0x75, 0x23              // jnz     short
+};
+
+static const uint8_t kSkipInternalControllerNVRAMCheckMask13_3[] =
+{
+    0xFF, 0xFF, 0x00, 0xFF,
+    0xFF, 0xFF,
+    0xFF, 0xFF,
+    0xFF, 0xFF
 };
 
 static const uint8_t kSkipInternalControllerNVRAMCheckPatched13_3[] =
@@ -137,6 +145,14 @@ static const uint8_t kSkipInternalControllerNVRAMCheckPatched13_3[] =
     0x90, 0x90,
     0x90, 0x90,
     0x90, 0x90
+};
+
+static const uint8_t kSkipInternalControllerNVRAMCheckPatchedMask13_3[] =
+{
+    0xFF, 0xFF, 0xFF, 0xFF,
+    0xFF, 0xFF,
+    0xFF, 0xFF,
+    0xFF, 0xFF
 };
 
 static bool shouldPatchBoardId = false;
@@ -205,6 +221,7 @@ static void patched_cs_validate_page(vnode_t vp, memory_object_t pager, memory_o
             searchAndPatch(data, PAGE_SIZE, path, kBadChipsetCheckOriginal, kBadChipsetCheckPatched);
             searchAndPatch(data, PAGE_SIZE, path, kBadChipsetCheckOriginal13_3, kBadChipsetCheckPatched13_3);
             searchAndPatch(data, PAGE_SIZE, path, kSkipInternalControllerNVRAMCheck13_3, kSkipInternalControllerNVRAMCheckPatched13_3);
+            searchAndPatchWithMask(data, PAGE_SIZE, path, kSkipInternalControllerNVRAMCheck13_3, kSkipInternalControllerNVRAMCheckMask13_3, kSkipInternalControllerNVRAMCheckPatched13_3, kSkipInternalControllerNVRAMCheckPatchedMask13_3);
             if (shouldPatchBoardId)
                 searchAndPatch(data, PAGE_SIZE, path, boardIdsWithUSBBluetooth[0], kBoardIdSize, BaseDeviceInfo::get().boardIdentifier, kBoardIdSize);
             if (shouldPatchAddress)
@@ -263,6 +280,6 @@ PluginConfiguration ADDPR(config) {
     bootargBeta,
     arrsize(bootargBeta),
     KernelVersion::Monterey,
-    KernelVersion::Ventura,
+    KernelVersion::Sonoma,
     pluginStart
 };
