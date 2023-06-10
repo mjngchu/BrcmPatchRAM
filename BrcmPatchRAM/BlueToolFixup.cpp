@@ -220,7 +220,6 @@ static void patched_cs_validate_page(vnode_t vp, memory_object_t pager, memory_o
             searchAndPatch(data, PAGE_SIZE, path, kVendorCheckOriginal, kVendorCheckPatched);
             searchAndPatch(data, PAGE_SIZE, path, kBadChipsetCheckOriginal, kBadChipsetCheckPatched);
             searchAndPatch(data, PAGE_SIZE, path, kBadChipsetCheckOriginal13_3, kBadChipsetCheckPatched13_3);
-            searchAndPatch(data, PAGE_SIZE, path, kSkipInternalControllerNVRAMCheck13_3, kSkipInternalControllerNVRAMCheckPatched13_3);
             searchAndPatchWithMask(data, PAGE_SIZE, path, kSkipInternalControllerNVRAMCheck13_3, kSkipInternalControllerNVRAMCheckMask13_3, kSkipInternalControllerNVRAMCheckPatched13_3, kSkipInternalControllerNVRAMCheckPatchedMask13_3);
             if (shouldPatchBoardId)
                 searchAndPatch(data, PAGE_SIZE, path, boardIdsWithUSBBluetooth[0], kBoardIdSize, BaseDeviceInfo::get().boardIdentifier, kBoardIdSize);
